@@ -1,0 +1,33 @@
+// Q4. Fonction sortPokemonByName() donnant la liste des Pokémons triés par nom dans l’ordre alphabétique
+function sortPokemonByName() {
+    return Object.values(all_pokemons).sort((a, b) => a.pokemonName.localeCompare(b.pokemonName));
+}
+
+// Q5. Fonction sortPokemonByStamina() donnant la liste des Pokémons triés dans l’ordre décroissant d’endurance (stamina)
+function sortPokemonByStamina() {
+    return Object.values(all_pokemons).sort((a, b) => b.baseStamina - a.baseStamina);
+}
+
+// Q6. Fonction getWeakestEnemies(attack) qui retourne la liste des Pokémons qui ont le moins de résistance à une attaque donnée choisie parmi les attaques du Pokémon
+function getWeakestEnemies(attack) {
+    const weakestEnemies = [];
+    for (const pokemonId in all_pokemons) {
+        const pokemon = all_pokemons[pokemonId];
+        if (pokemon.getAttacks().some(a => a.name === attack)) {
+            weakestEnemies.push(pokemon);
+        }
+    }
+    return weakestEnemies;
+}
+
+// Q7. Fonction getStrongestEnemies(attack) qui retourne la liste des Pokémons qui ont le plus de résistance à une attaque donnée choisie parmi les attaques du Pokémon
+function getStrongestEnemies(attack) {
+    const strongestEnemies = [];
+    for (const pokemonId in all_pokemons) {
+        const pokemon = all_pokemons[pokemonId];
+        if (pokemon.getAttacks().some(a => a.name === attack)) {
+            strongestEnemies.push(pokemon);
+        }
+    }
+    return strongestEnemies;
+}
