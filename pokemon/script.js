@@ -68,7 +68,7 @@ function import_pokemon() {
         const pokemonTypeData = typeData.find((type) => type.pokemon_id === data.pokemon_id);
         pokemonTypeData.type.forEach((tipe) => {
             if (Object.entries(Type.all_types).find(entry => entry[0] === tipe)){
-                typ=Object.entries(Type.all_types).find(entry => entry[0] === tipe);
+                typ=Object.entries(Type.all_types).find(entry => entry[0] === tipe)[1];
             }
             else{
                 typ=new Type(tipe,Object.entries(type_effectiveness).find(entry => entry[0] === tipe));
