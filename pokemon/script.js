@@ -27,10 +27,10 @@ class Pokemon {
 
 class Type {
     static all_types={};
-    constructor(type,nom) {
+    constructor(type,eff) {
         this.name = type;
-        this.multipliers = nom;
-        Type.all_types[nom]=this;
+        this.multipliers = eff[1];
+        Type.all_types[type]=this;
     }
 
     toString() {
@@ -60,20 +60,18 @@ function import_pokemon() {
     let movesData = pokemon_moves;
     let poki={}
 
-    // Créer des objets Pokemon à partir des données
     pokemonData.forEach((data) => {
 
         const pokemon = new Pokemon(data);
         poki[pokemon.pokemonId] = pokemon;
 
-        // Chercher les types correspondant à ce Pokémon 
         const pokemonTypeData = typeData.find((type) => type.pokemon_id === data.pokemon_id);
         pokemonTypeData.type.forEach((tipe) => {
             if (Object.entries(Type.all_types).find(entry => entry[0] === tipe)){
                 typ=Object.entries(Type.all_types).find(entry => entry[0] === tipe);
             }
             else{
-                typ=new Type(tipe,pokemonTypeData.name);
+                typ=new Type(tipe,Object.entries(type_effectiveness).find(entry => entry[0] === tipe));
             }
             pokemon.types.push(typ);
         });
@@ -110,10 +108,10 @@ function import_pokemon() {
     return poki;
 }
 
-Type.all_types = {};
+
+console.log(Type.all_types)
+
 Attack.all_attacks = {};
-
-const all_pokemons = import_pokemon();
-
+all_pokemons=import_pokemon()
 console.log('Types de Pokémon:');
 console.log(all_pokemons);
