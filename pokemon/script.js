@@ -1,5 +1,5 @@
-// Classe Pokemon
 class Pokemon {
+    static all_pokemons = {};
     constructor(pokemonData) {
         this.pokemonId = pokemonData.pokemon_id;
         this.pokemonName = pokemonData.pokemon_name;
@@ -7,8 +7,9 @@ class Pokemon {
         this.baseDefense = pokemonData.base_defense;
         this.baseStamina = pokemonData.base_stamina;
         this.form = pokemonData.form;
-        this.types = []; // Nous allons stocker les types ici
-        this.attacks = []; // Nous allons stocker les attaques ici
+        this.types = [];
+        this.attacks = [];
+        Pokemon.all_pokemons[this.pokemonId]=this;
     }
 
     toString() {
@@ -24,11 +25,12 @@ class Pokemon {
     }
 }
 
-// Classe Type
 class Type {
-    constructor(typeData) {
-        this.name = typeData.type;
-        this.multipliers = typeData[this.name];
+    static all_types={};
+    constructor(type,nom) {
+        this.name = type;
+        this.multipliers = nom;
+        Type.all_types[nom]=this;
     }
 
     toString() {
@@ -36,15 +38,15 @@ class Type {
     }
 }
 
-// Classe Attack
 class Attack {
+    static all_moves={};
     constructor(attackData) {
         this.moveId = attackData.move_id;
         this.name = attackData.name;
         this.type = attackData.type;
         this.power = attackData.power;
         this.duration = attackData.duration;
-        // Ajoutez d'autres propriétés si nécessaire
+        Attack.all_moves[this.moveId]=this;
     }
 
     toString() {
@@ -53,27 +55,28 @@ class Attack {
 }
 
 function import_pokemon() {
-    const all_pokemons = {};
-
-    // Importer les données des fichiers .js
-    const pokemonData = pokemon;
-    const typeData = pokemon_types;
-    const movesData = pokemon_moves;
+    let pokemonData = pokemons;
+    let typeData = pokemon_types;
+    let movesData = pokemon_moves;
+    let poki={}
 
     // Créer des objets Pokemon à partir des données
     pokemonData.forEach((data) => {
+
         const pokemon = new Pokemon(data);
-        all_pokemons[pokemon.pokemonId] = pokemon;
+        poki[pokemon.pokemonId] = pokemon;
 
         // Chercher les types correspondant à ce Pokémon 
         const pokemonTypeData = typeData.find((type) => type.pokemon_id === data.pokemon_id);
-        if (pokemonTypeData && pokemonTypeData.type && Array.isArray(pokemonTypeData.type)) {
-            pokemonTypeData.type.forEach((type) => {
-                pokemon.types.push(type);
-            });
-        } else {
-            console.log("Aucun type trouvé pour ce Pokémon:", data);
-        }
+        pokemonTypeData.type.forEach((tipe) => {
+            if (Object.entries(Type.all_types).find(entry => entry[0] === tipe)){
+                typ=Object.entries(Type.all_types).find(entry => entry[0] === tipe);
+            }
+            else{
+                typ=new Type(tipe,pokemonTypeData.name);
+            }
+            pokemon.types.push(typ);
+        });
 
         // Chercher les attaques correspondant à ce Pokémon
         const pokemonMovesData = movesData.find((moves) => moves.pokemon_id === data.pokemon_id);
@@ -104,18 +107,13 @@ function import_pokemon() {
         }
     });
 
-    return all_pokemons;
+    return poki;
 }
 
-// Variables de classe pour stocker toutes les données
 Type.all_types = {};
 Attack.all_attacks = {};
 
-// Exemple d'utilisation
 const all_pokemons = import_pokemon();
 
-
-
-// Affichez les types de Pokémon
 console.log('Types de Pokémon:');
 console.log(all_pokemons);
