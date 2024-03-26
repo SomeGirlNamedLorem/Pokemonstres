@@ -60,7 +60,8 @@ td {
     text-align: center;
 }
 #prev-btn,
-#next-btn {
+#next-btn,
+#close-details-btn {
     padding: 8px 16px;
     margin: 0 4px;
     border: none;
@@ -72,7 +73,8 @@ td {
 }
 
 #prev-btn:hover,
-#next-btn:hover {
+#next-btn:hover,
+#close-details-btn:hover {
     background-color: #45a049;
 }
 
@@ -91,4 +93,39 @@ td {
 
 .hidden {
     display: none;
+}
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fond gris semi-transparent */
+    z-index: 100; /* Assure que la popup soit au-dessus de tout autre contenu */
+}
+
+.popup-container {
+    position: fixed;
+    text-align: center;
+    top: 50%; /* Centre la popup verticalement */
+    left: 50%; /* Centre la popup horizontalement */
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Ombre pour un effet de profondeur */
+    z-index: 101; /* Assure que la popup soit au-dessus du fond gris */
+}
+
+#pokemon-image {
+    width: 50%;
+}
+#details {
+    width: 50%;
+}
+
+.details-poks {
+    display: flex;
+    flex-direction: row;
 }
