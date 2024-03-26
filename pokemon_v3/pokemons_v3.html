@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste des Pokémons</title>
     <link rel="stylesheet" href="../CSS/styles.css"> <!-- Inclure le fichier de styles CSS -->
+    <link rel="stylesheet" href="styles.css"> <!-- Inclure le fichier de styles CSS pour la popup -->
     <script src="../data/pokemons.js"></script>
     <script src="../data/pokemon_type.js"></script>
     <script src="../data/pokemon_moves.js"></script>
@@ -42,11 +43,16 @@
         </tbody>
     </table>
     
-    <!-- Zone de détails des Pokémons -->
-    <div id="pokemon-details" class="hidden">
-        <h2>Détails du Pokémon</h2>
-        <p id="pokemon-attacks"></p>
-        <button id="close-details-btn">Fermer</button>
+    <!-- Zone de détails des Pokémons (popup) -->
+    <div id="pokemon-details" class="popup-overlay hidden">
+        <div class="popup-container">
+            <h2>Détails du Pokémon</h2>
+            <div class="details-poks">
+                <p id="details"></p>
+                <img id="pokemon-image" src="" alt="Image du Pokémon">
+            </div>
+            <button id="close-details-btn">Fermer</button>
+        </div>
     </div>
 
     <!-- Zone pour afficher l'image en grande taille -->
