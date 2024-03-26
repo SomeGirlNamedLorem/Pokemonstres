@@ -30,7 +30,7 @@ function import_pokemon() {
             pokemonMovesData.fast_moves.forEach((attackName) => {
                 const attackData = fast_moves.find((move) => move.name === attackName);
                 if (attackData) {
-                    const attack = new Attack(attackData);
+                    const attack = new Attack(attackData, 'fast');
                     pokemon.attacks.push(attack);
                 } else {
                     console.log("Aucune donnée d'attaque trouvée pour:", attackName);
@@ -41,7 +41,7 @@ function import_pokemon() {
             pokemonMovesData.charged_moves.forEach((attackName) => {
                 const attackData = charged_moves.find((move) => move.name === attackName);
                 if (attackData) {
-                    const attack = new Attack(attackData);
+                    const attack = new Attack(attackData, 'charged');
                     pokemon.attacks.push(attack);
                 } else {
                     console.log("Aucune donnée d'attaque trouvée pour:", attackName);
@@ -169,20 +169,56 @@ let selectedPokemon = null;
 // Fonction pour afficher les détails du Pokémon sélectionné
 function showPokemonDetails(pokemon) {
     const detailsPopup = document.getElementById('pokemon-details');
-    const attacksInfo = document.getElementById('pokemon-attacks');
-    console.log(pokemon);
+    const detailsInfo = document.getElementById('details');
+    const pokemonImage = document.getElementById('pokemon-image');
+
     // Efface le contenu précédent
-    attacksInfo.innerHTML = '';
+    detailsInfo.innerHTML = '';
+
+    // Ajoute l'image du Pokémon en grande taille
+    if (pokemon.pokemonId < 10) {
+        pokemonImage.src = `../webp/images/00${pokemon.pokemonId}.webp`;
+    } else if (pokemon.pokemonId < 100) {
+        pokemonImage.src = `../webp/images/0${pokemon.pokemonId}.webp`;
+    } else {
+        pokemonImage.src = `../webp/images/${pokemon.pokemonId}.webp`;
+    }
+
+    // Ajoute le nom du Pokémon
+    detailsInfo.innerHTML += `<strong>Nom:</strong> ${pokemon.pokemonName}<br><br>`;
+
+    // Ajoute le type du Pokémon
+    detailsInfo.innerHTML += `<strong>Type(s):</strong> ${pokemon.types.map(type => type.name).join(', ')}<br><br>`;
+
+    // Ajoute la génération du Pokémon
+    detailsInfo.innerHTML += `<strong>Génération:</strong> ${pokemon.generation}<br><br>`;
 
     // Ajoute les noms des attaques classées par type
-    pokemon.attacks.forEach((attack) => {
-        const attackType = attack.type === 'fast' ? 'Attaque rapide' : 'Attaque chargée';
-        attacksInfo.innerHTML += `<strong>${attackType}:</strong> ${attack.name}<br>`;
-    });
+    const fastAttacks = pokemon.attacks.filter(attack => attack.speed === 'fast');
+    const chargedAttacks = pokemon.attacks.filter(attack => attack.speed === 'charged');
+    console.log(fastAttacks);
+    console.log(chargedAttacks);
+    if (fastAttacks.length > 0) {
+        detailsInfo.innerHTML += '<strong>Attaques rapides:</strong><ul>';
+        fastAttacks.forEach(attack => {
+            detailsInfo.innerHTML += `<li>${attack.name}</li>`;
+        });
+        detailsInfo.innerHTML += '</ul><br>';
+    }
+
+    if (chargedAttacks.length > 0) {
+        detailsInfo.innerHTML += '<strong>Attaques chargées:</strong><ul>';
+        chargedAttacks.forEach(attack => {
+            detailsInfo.innerHTML += `<li>${attack.name}</li>`;
+        });
+        detailsInfo.innerHTML += '</ul><br>';
+    }
 
     // Affiche la zone de détails
     detailsPopup.classList.remove('hidden');
 }
+
+
 
 // Fonction pour fermer la zone de détails du Pokémon
 function closePokemonDetails() {
